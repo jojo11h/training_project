@@ -1,13 +1,11 @@
 import requests as req
 import random as r
-url = "https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/fr.txt"
-
-res = req.get(url)
-hang_word = list(res.text.split())
 
 
 def choose_word():
-    return r.choice(hang_word)
+    url = "https://raw.githubusercontent.com/lorenbrichter/Words/master/Words/fr.txt"
+    res = req.get(url)
+    return r.choice(list(res.text.split()))
 
 
 def play_game(word):
@@ -19,7 +17,7 @@ def play_game(word):
     print("Bienvenue au jeu du Pendu!")
 
     while remaining_attemps > 0 and not bool:
-        letter = input('Entrez une lettre : \n => ').lower()
+        letter = input("Entrez une lettre : \n => ").lower()
 
         if len(letter) != 1 or not letter.isalpha():
             print("veuillez rentrez UNE SEULE lettre valide [A-Z,a-z]")
@@ -28,29 +26,29 @@ def play_game(word):
             print("Vous avez déjà utilisé cette lettre")
 
         elif letter in word:
-            print('ca match !')
+            print("ca match !")
 
             for index, element in enumerate(word):
                 if element == letter:
                     hide_word[index] = element
         else:
-            print('ca ne match pas !')
+            print("ca ne match pas !")
             remaining_attemps -= 1
-            print(f'(il te reste {remaining_attemps} tentatives)')
+            print(f"(il te reste {remaining_attemps} tentatives)")
             letters_used.append(letter)
-            print(f'les lettres utilisées : {letters_used}')
+            print(f"les lettres utilisées : {letters_used}")
 
         if hide_word == list(word):
-            print('Bravos tu a gagné !!!!!')
+            print("Bravos tu a gagné !!!!!")
             bool = True
 
         if remaining_attemps <= 0:
-            print('Tu a perdu !')
+            print("Tu a perdu !")
             print()
-            print(f'le mot caché était : {word}')
+            print(f"le mot caché était : {word}")
 
         print()
-        print(' '.join(hide_word))
+        print(" ".join(hide_word))
         print()
 
 
