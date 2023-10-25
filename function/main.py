@@ -1,6 +1,7 @@
+import time
 print("E-TECH.COM")
 
-bisiness = {
+business = {
     "nom_entreprise": "E-TECH.COM",
     "activite_entreprise": "Vente de matériel i-tech en ligne",
     "adresse_entreprise": "18 rue de la tech 94301 Palo Alto USA ",
@@ -22,9 +23,26 @@ produit_tab = [
 
 def show_business(name, activity, localisation, date):
     print(name)
-    print(f"est une entreprise de {activity} ")
-    print(f"elle a etait créé en {date}")
-    print(f"sont addresse est actuellement : {localisation} ")
+    print(f"- Est une entreprise de {activity} ")
+    print(f"- Elle a etait créé en {date}")
+    print(f"- Sont addresse est actuellement : {localisation} ")
+
+
+def show_employee(employee):
+    print(
+        "  ID  |  First Name  |  Last Name  |  Birthdate  |  Start Job  |  Salary (€)")
+    for id, first_name, last_name, birthdate, start_job, salary in employee:
+        print("-" * 70)  # Ligne de séparation
+        print(
+            f"{id:3} | {first_name:12} | {last_name:11} | {birthdate:10} | {start_job:10} | {salary:9}€")
+
+
+def show_product(produits):
+    print(
+        "  ID  |  Name  |  Quantity  |  Value (€)")
+    for id, name, price, qte in produits:
+        print("-"*40)
+        print(f'{id:3} | {name:13} | {qte:5} | {price:8}€')
 
 
 while True:
@@ -41,8 +59,16 @@ while True:
 
     match user_prompt:
         case "1":
-            info = bisiness.values()
-            print(info[0])
-            # show_business(info[0], info[1], info[2], info[3])
+            show_business(business["nom_entreprise"], business["activite_entreprise"],
+                          business["adresse_entreprise"], business["date_create_entreprise"])
+            time.sleep(2.5)
+
+        case '2':
+            show_employee(salarie_tab)
+            time.sleep(2.5)
+
+        case '3':
+            show_product(produit_tab)
+            time.sleep(2.5)
         case "4":
             break
