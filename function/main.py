@@ -1,15 +1,13 @@
 import time
 import csv
+print("E-TECH.COM")
 
 
 def read_file(file_to_read):
-    with open(file_to_read, "r", encoding="utf-8") as file:
-        read_data = csv.reader(file, delimiter=";")
+    with open(file_to_read, 'r', encoding='utf-8') as file:
+        read_data = csv.reader(file, delimiter=';')
         data = list(read_data)
         return data
-
-
-print("-" * 20, "E-TECH.COM", "-" * 20)
 
 
 def show_business(name, activity, localisation, date):
@@ -19,30 +17,42 @@ def show_business(name, activity, localisation, date):
     print(f"- Sont addresse est actuellement : {localisation} ")
 
 
-# Affichage des paramètres donnés sous forme de tableau
-
-
 def show_employee(employee):
     print(
-        "  ID  |  First Name  |  Last Name  |  Birthdate  |  Start Job  |  Salary (€)"
-    )
-    for id, first_name, last_name, birthdate, start_job, salary in employee:
+        "  ID  |  First Name  |  Last Name  |  Birthdate  |  Start Job  |  Salary (€)")
+    for data in employee:
         print("-" * 70)
         print(
-            f"{id:3} | {first_name:12} | {last_name:11} | {birthdate:10} | {start_job:10} | {salary:9}€"
-        )
-    print("-" * 70)
-
+            f"{data[0]:3} | {data[1]:12} | {data[2]:11} | {data[3]:10} | {data[4]:10} | {data[5]:9}€")
 
 # Affichage des paramètres donnés sous forme de tableau
 
 
 def show_product(produits):
-    print("  ID  |  Name  |  Quantity  |  Value (€)")
-    for id, name, price, qte in produits:
-        print("-" * 40)
-        print(f"{id:3} | {name:13} | {qte:5} | {price:8}€")
-    print("-" * 40)
+    print(
+        "  ID  |  Name  |  Quantity  |  Value (€)")
+    for data in produits:
+        print("-"*40)
+        print(f'{data[0]:3} | {data[1]:13} | {data[3]:5} | {data[2]:8}€')
+
+
+# fonction qui supprime les doublons et additionne les quantités
+def update_product_csv(file):
+    product_totals = {}
+
+    for item in file:
+        product_id, product_name, price, quantity = item
+    # Vérifier si le nom du produit est déjà présent dans le dictionnaire
+        if product_name in product_totals:
+            # ajouter la quantité actuelle à la quantité existante
+            product_totals[product_name][3] = str(
+                int(product_totals[product_name][3]) + int(quantity))
+        else:
+            # Sinon, ajouter une nouvelle entrée dans le dictionnaire
+            product_totals[product_name] = item
+    # Convertir le dictionnaire en une liste de listes
+    result = list(product_totals.values())
+    return result
 
 
 # Boucle jusqu'a la commande pour sortir
@@ -62,27 +72,23 @@ while True:
     # lanceLancement d'un programme en fontion de la donnée utilisateur
     match user_prompt:
         case "1":
-            show_business(
-                read_file("entreprise.csv")[0][1],
-                read_file("entreprise.csv")[0][2],
-                read_file("entreprise.csv")[0][3],
-                read_file("entreprise.csv")[0][4],
-            )
+            file = 'entreprise.csv'
+            print()
+            # notion unpacking https://www.pythoniste.fr/python/packing-et-unpacking-d-arguments-de-fonctions-en-python/
+            _, name, activity, localisation, date = list(read_file(file))[0]
+            show_business(name, activity, localisation, date)
+            time.sleep(2.5)
+
+        case '2':
+            file = 'salarie.csv'
+            show_employee(read_file(file))
             # stop un temp donné avant l'affichage du menu
             time.sleep(2.5)
 
-        case "2":
-            data = read_file("salarie.csv")
-            print(data[1])
-            # for i, line in enumerate(data):
-            #     data[i] = show_employee(*line)
-            # print(read_file("salarie.csv"))
-            # show_employee(salarie_tab)
-            # stop un temp donné avant l'affichage du menu
-            time.sleep(2.5)
-
-        case "3":
-            # show_product(produit_tab)
+        case '3':
+            file = 'stock.csv'
+            show_product(update_product_csv(read_file(file)))
+            # show_product(read_file(file))
             # stop un temp donné avant l'affichage du menu
             time.sleep(2.5)
         case "4":
